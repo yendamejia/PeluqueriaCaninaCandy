@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const reservaSchema = new mongoose.Schema({
     mascota: { type: mongoose.Schema.Types.ObjectId, ref: 'Mascota', required: true },
-    fecha: {type: Date, required: true },
+    fecha: { type: Date, required: true },
+    hora: { type: String, required:true},
     servicio: {
         type: String,
         enum: ['Baño y peluqueria canina', 'baño felino'],

@@ -1,21 +1,40 @@
-const express = require("express")
-const app = express()
-const port = 3000
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
+require("dotenv").config();
 
-const mongoose =require("mongoose")
+const app = express();
+const port = process.env.PORT || 3000;
 
-// conectar a mongoose
+app.use(cors())
+app.use(express.json());
 
-mongoose.connect("mongodb://localhost:27017/peluqueriaCanina", {
-    useNewUrlParser:true,
-    useUnifiedTopology: true
-}).then(() => {
-    console.log("Conexion exitosa a mongo")
-}).catch((error) =>{
-    console.log("Error al conectarnos a mongo:" + error)
+//RUTAS
+const usuarioRoutes = require("./routes/usuarioRoutes"); 
+const mascotaRoutes = require('./routes/mascotaRoutes');
+const reservaRoutes = require('./routes/reservaRoutes');
 
-})
-// escuchando desde el puerto 3000
-app.listen(port, () => {
-    console.log("servidor funcionado por el puerto " + port)
-})
+
+app.use("/api/usuarios", usuarioRoutes);
+app.use('/api/mascotas', mascotaRoutes);
+app.use('/app/reservas', reservaRoutes);
+
+// Ruta base
+app.get("/", (req, res) => {
+  res.send("servidor de peluqueria canina Candy funcionando");
+});
+
+// Conexion a MongoDB 
+
+mongoose
+   .connect(process.env.MONGO_URI)
+   .then(() => {
+     console.log("Conexion exitosa a MongoDB");
+     app.listen(port, () => {
+       console.log(`servidor funcionando en el puerto ${port}`);
+     });
+   })
+   .catch((error) => {
+     console.log("Error al conectarse aMongoDB:" + error);
+   });
+   
