@@ -19,7 +19,7 @@ const obtenerUsuarios = async (req, res) => {
         const usuarios = await Usuario.find();
         res.status(200).json(usuarios);
     } catch (error) {
-      console.error("Error al crear usuario, error");
+      console.error("Error al crear usuario", error);
       res.status(500).json({error: error.message });    
     }
 };

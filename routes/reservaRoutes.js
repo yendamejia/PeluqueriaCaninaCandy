@@ -1,4 +1,4 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
 
 const {
@@ -7,7 +7,7 @@ const {
   cancelarReserva
 } = require("../controllers/reservaController");
 
-router.post('/', CrearReserva);
+router.post('/', crearReserva);
 router.get('/dia', obtenerReservasPorDia);
 router.patch('/cancelar/:id', cancelarReserva);
 

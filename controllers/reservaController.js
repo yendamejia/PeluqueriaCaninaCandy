@@ -32,13 +32,30 @@ const turnosDisponibles = ["08:00", "9:00", "10:00", "11:00", "12:00", "14:00", 
   try {
     const { mascotaId, fecha } = req.body;
 
+    const fechaReserva = new Date(fecha);
+    const hoy = new Date();
+    hoy.setHours(0,0,0,0);
+
+    //No permitir fechas pasadas
+    if (fechaReserva < hoy) {
+      return res.status(400).json ({error: "No se puede reservar fechas pasadas" })
+    }
+
+    //No permitir reservas con mas de dos meses de anticipacion
+    const dosMesesDespues = new Date();
+    dosMesesDespues.setMonth(dosMesesDespues.getMonth() + 2);
+
+    if (fechaReserva > dosMesesDespues) {
+      return res.status(400).json({error: "No se pueden hacer reservas con mas de 2 meses de anticipacion"});
+    }
+
     const mascota =await Mascota.findById(mascotaId);
     if (!mascota) return res.status(404).json({ error: "Mascota no encontrada" });
 
     // validar si es domingo
     const dia = new Date(fecha).getDay(); // 0 = domingo , 6 = sabado
     if (dia === 0) {
-      return res.status(400).json({error: "La peluqueria no atiende los domingos"});   
+      return res.status(400).json({error: "La peluquería no atiende los domingos"});   
     }
 
     const raza = mascota.raza.trim();
@@ -60,17 +77,17 @@ const turnosDisponibles = ["08:00", "9:00", "10:00", "11:00", "12:00", "14:00", 
     }
  });
 
-    if (reservasDelDia.length  >=  TurnosDisponible.length) {
+    if (reservaDelDia.length  >=  turnosDisponibles.length) {
       return res.status(400).json({error: "No hay turnos disponibles para ese dia"});
     }
 
-    const horaAsignada = TurnosDisponibles[ReservasDelDia.length];
+    const horaAsignada = turnosDisponibles[reservaDelDia.length];
 
     const nuevaReserva = new Reserva({
       mascota: mascotaId,
       fecha,
       hora: horaAsignada,
-      servicio: "Baño y Peluqueria",
+      servicio: "Baño y peluquería canina",
       precioTotal: precio
   });
 
@@ -118,14 +135,17 @@ const cancelarReserva = async (req, res) => {
 // Consultar reservas por fecha (GET/api/reservas/dia? fecha= YYYY-MM-DD)
 const obtenerReservasPorDia = async (req, res) => {
     try {
-      const { fecha } = req.query;
+      const fecha = req.query.fecha;
       if (!fecha) return res.status(400).json({error: "Se requiere la fecha"});
 
-      const fechaInicio = new Date(`${fecha} T00:00:00.00Z`);
-      const FechaFin = new Date(`${fecha} T23:59:59.999`);
+      const fechaInicio = new Date(`${fecha}T00:00:00.00Z`);
+      const FechaFin = new Date(`${fecha}T23:59:59.999Z`)
 
       const reservas = await Reserva.find({
-        fecha: { $gte: fechaInicio, $lt: fechafin }
+        fecha:
+        { $gte: fechaInicio,
+          $lt: FechaFin
+         }
         }).populate('mascota').sort({hora: 1});
 
         res.status(200).json(reservas);
@@ -137,4 +157,5 @@ const obtenerReservasPorDia = async (req, res) => {
 module.exports = {
   crearReserva, 
   obtenerReservasPorDia,
+  cancelarReserva
 };

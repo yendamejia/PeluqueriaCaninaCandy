@@ -17,24 +17,23 @@ const reservaRoutes = require('./routes/reservaRoutes');
 
 app.use("/api/usuarios", usuarioRoutes);
 app.use('/api/mascotas', mascotaRoutes);
-app.use('/app/reservas', reservaRoutes);
+app.use('/api/reservas', reservaRoutes);
 
 // Ruta base
 app.get("/", (req, res) => {
-  res.send("servidor de peluqueria canina Candy funcionando");
+  res.send("servidor de peluquería canina Candy funcionando");
 });
 
 // Conexion a MongoDB 
 
-mongoose
-   .connect(process.env.MONGO_URI)
-   .then(() => {
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
      console.log("Conexion exitosa a MongoDB");
      app.listen(port, () => {
        console.log(`servidor funcionando en el puerto ${port}`);
      });
    })
    .catch((error) => {
-     console.log("Error al conectarse aMongoDB:" + error);
+     console.log("Error al conectarse aMongoDB:", error.message);
    });
    

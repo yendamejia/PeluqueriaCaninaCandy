@@ -1,0 +1,118 @@
+{
+  "info": {
+    "name": "Peluquería Canina API",
+    "_postman_id": "12345678-abcd-efgh-ijkl-1234567890ab",
+    "description": "Colección de solicitudes para la API de la peluquería canina.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Crear Usuario",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Laura Rojas\",\n  \"correo\": \"laura.rojas@example.com\",\n  \"password\": \"12345\",\n  \"rol\": \"usuario\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/usuarios",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "usuarios"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Mascota",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"nombre\": \"Toby\",\n  \"raza\": \"Labrador\",\n  \"edad\": 3,\n  \"usuarioId\": \"{{usuarioId}}\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/mascotas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "mascotas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Crear Reserva",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"mascotaId\": \"{{mascotaId}}\",\n  \"fecha\": \"2025-05-31\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/reservas",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "reservas"]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Obtener Reservas por Día",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/reservas/dia?fecha=2025-05-31",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "reservas", "dia"],
+          "query": [
+            {
+              "key": "fecha",
+              "value": "2025-05-31"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Cancelar Reserva",
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/reservas/cancelar/{{reservaId}}",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "3000",
+          "path": ["api", "reservas", "cancelar", "{{reservaId}}"]
+        }
+      },
+      "response": []
+    }
+  ]
+}

@@ -6,7 +6,7 @@ const reservaSchema = new mongoose.Schema({
     hora: { type: String, required:true},
     servicio: {
         type: String,
-        enum: ['Baño y peluqueria canina', 'baño felino'],
+        enum: ['Baño y peluquería canina', 'baño felino'],
         required: true
     },
     precioTotal: { type: Number, required: true },
