@@ -50,3 +50,10 @@ El sistema permite:
 - Express.js
 - MongoDB + Mongoose
 - Postman (para pruebas)
+
+##  Cómo descargar
+
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/TU_USUARIO/PeluqueriaCaninaCandy.git
+cd PeluqueriaCaninaCandy
